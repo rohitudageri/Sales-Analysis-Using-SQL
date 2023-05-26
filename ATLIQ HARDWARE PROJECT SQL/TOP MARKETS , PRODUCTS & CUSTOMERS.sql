@@ -37,23 +37,43 @@ GROUP BY fs.date ;
 
 
 # PROBLEM 3
--- Q3) Create a stroe procedure that can determine market badge based on 
+-- Q3) Create a store procedure that can determine market badge based on 
 -- if total_qty_sold > 5 million than it is GOLD else SILVER
 
-SELECT fs.date,dc.market,
-        SUM(fs.sold_quantity)
+CREATE  PROCEDURE `get_market_badge`(
+IN enter_market CHAR(45),
+IN enter_fiscal_year YEAR,
+OUT badge CHAR(10)
+)
+BEGIN
+
+DECLARE sold_qty INT DEFAULT 0;
+
+CASE 
+ WHEN enter_market = "" THEN 
+  SET enter_market = "INDIA" ;
+END CASE;
+
+SELECT 
+        SUM(fs.sold_quantity) into sold_qty
 FROM fact_sales_monthly fs
 INNER JOIN dim_customer dc
 ON dc.customer_code = fs.customer_code
-WHERE dc.market = "INDIA" and
-      get_fiscal_year(fs.date) = 2021 
-GROUP BY  dc.market, fs.date ; 
+WHERE dc.market = enter_market and
+      get_fiscal_year(fs.date) = enter_fiscal_year
+GROUP BY  dc.market ; 
+
+CASE 
+  WHEN  sold_qty >5000000  THEN SET badge = "GOLD";
+  ELSE SET badge = "SILVER";
+END CASE;
+END
 
 
 # PROBLEM 4
 -- Q4) Generate a report for top markets , top products and top customer by net sales
 
--- 1) to optimize the execurtion time we created new table as dim_date , because while execution date is being repeated for 1.4 million 
+-- 1) to optimize the execution time we created new table as dim_date , because while execution date is being repeated for 1.4 million 
 
 SELECT fs.date,
        (fg.gross_price * fs.sold_quantity ) total_gross_price,
@@ -71,7 +91,7 @@ WHERE dt.fiscal_year= 2021 ;
    
    
 -- 2) we can also optimize this by directly creating a new column in fact_Sales_monthly table , yes it may increase the storage as for dim_date table we have only 74 rows i.e, = 74bytes but in facts_table we will have 1.4 million new row 
--- BUT STORAGE IS NOT AN ISSUE FOR ANY COMPANY , By this we dont require to join the dim_date table
+-- BUT STORAGE IS NOT AN ISSUE , By this we dont require to join the dim_date table
 
 
 SELECT fs.date,
