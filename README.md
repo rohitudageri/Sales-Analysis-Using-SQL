@@ -1,4 +1,4 @@
-# SQL-Project 
+# SQL-Project (MYSQL)
 
 ▪️ **Methodology**: Utilized MySQL and SQL functions to conduct data cleaning, modeling, and analysis. Employed various SQL commands, joins, and window functions to derive insights.
 
