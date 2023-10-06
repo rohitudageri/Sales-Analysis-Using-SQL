@@ -10,15 +10,15 @@
 
 # Skills :
 - DDL : CREATE , ALTER , DROP and TRUNCATE
-- 
+  
 - DML : SELECT , INSERT , UPDATE and DELETE
-- 
+  
 - CRUD : CREATE, READ, UPDATE and DELETE.
-- 
+  
 - Joins : Left join, Right Join
-- 
+  
 - Aggregation functions : SUM() , MIN() , MAX() , AVG() , COUNT()
-- 
+  
 - Clauses : WHERE , HAVING
-- 
+  
 - window functions :  Rank , Row_Number() , Dense_Rank() 
